@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "number": 1,
+    "status": "free",
+    "updatedAt": "2026-04-28T12:21:11.273Z"
+  },
+  {
+    "id": "2",
+    "number": 2,
+    "status": "free",
+    "updatedAt": "2026-04-28T15:14:08.018Z"
+  },
+  {
+    "id": "3",
+    "number": 3,
+    "status": "occupied",
+    "updatedAt": "2026-04-28T14:43:59.758Z"
+  },
+  {
+    "id": "4",
+    "number": 4,
+    "status": "free",
+    "updatedAt": "2026-04-25T19:03:45.123Z"
+  },
+  {
+    "id": "5",
+    "number": 5,
+    "status": "free",
+    "updatedAt": "2026-04-28T12:21:18.737Z"
+  },
+  {
+    "id": "6",
+    "number": 6,
+    "status": "free",
+    "updatedAt": "2026-04-28T12:21:22.268Z"
+  },
+  {
+    "id": "7",
+    "number": 7,
+    "status": "free",
+    "updatedAt": "2026-04-25T10:27:00.777Z"
+  },
+  {
+    "id": "8",
+    "number": 8,
+    "status": "free",
+    "updatedAt": "2026-04-23T12:00:00.000Z"
+  },
+  {
+    "id": "9",
+    "number": 9,
+    "status": "free",
+    "updatedAt": "2026-04-23T12:00:00.000Z"
+  },
+  {
+    "id": "10",
+    "number": 10,
+    "status": "occupied",
+    "updatedAt": "2026-04-28T15:09:11.429Z"
+  },
+  {
+    "id": "11",
+    "number": 11,
+    "status": "free",
+    "updatedAt": "2026-04-23T12:00:00.000Z"
+  },
+  {
+    "id": "12",
+    "number": 12,
+    "status": "free",
+    "updatedAt": "2026-04-25T20:18:31.187Z"
+  }
+]

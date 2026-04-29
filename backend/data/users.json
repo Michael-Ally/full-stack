@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1776589402270,
+    "username": "michael",
+    "phone": "8077511456",
+    "role": "admin",
+    "createdAt": "2026-04-19T09:03:22.270Z"
+  },
+  {
+    "id": 1776590911361,
+    "username": "customer1",
+    "phone": "0987654321",
+    "role": "customer",
+    "createdAt": "2026-04-19T09:28:31.361Z"
+  },
+  {
+    "id": 1776590911362,
+    "username": "operator1",
+    "phone": "0987654321",
+    "role": "operator",
+    "createdAt": "2026-04-19T09:28:31.362Z"
+  },
+  {
+    "id": 1776590911363,
+    "username": "cashier1",
+    "phone": "1111111111",
+    "role": "cashier",
+    "createdAt": "2026-04-19T09:28:31.363Z"
+  },
+  {
+    "id": 1776590911364,
+    "username": "customer2",
+    "phone": "2222222222",
+    "role": "customer",
+    "createdAt": "2026-04-19T09:28:31.364Z"
+  },
+  {
+    "id": 1776945529287,
+    "username": "cashier",
+    "phone": "5432167890",
+    "role": "cashier",
+    "createdAt": "2026-04-23T11:58:49.287Z"
+  },
+  {
+    "id": 1777037138380,
+    "username": "jack",
+    "phone": "9876543210",
+    "role": "customer",
+    "createdAt": "2026-04-24T13:25:38.380Z"
+  },
+  {
+    "id": 1777148235301,
+    "username": "cashier",
+    "phone": "6789054321",
+    "role": "cashier",
+    "createdAt": "2026-04-25T20:17:15.301Z"
+  },
+  {
+    "id": 1777179513647,
+    "username": "operator",
+    "phone": "2345678901",
+    "role": "operator",
+    "createdAt": "2026-04-26T04:58:33.647Z"
+  }
+]

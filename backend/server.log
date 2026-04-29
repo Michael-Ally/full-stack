@@ -1,0 +1,442 @@
+✅ Users loaded from file
+Products loaded from file
+✅ Orders loaded from file
+✅ Tables loaded from file
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║   Restaurant POS Server Running                                            ║
+║   Port: 3000                                                                ║
+║   API Base: http://localhost:3000/api                                      ║
+║                                                                              ║
+║   Authentication:                                                           ║
+║   POST   /api/signup/send-otp                                                ║
+║   POST   /api/signup/verify-otp                                              ║
+║   POST   /api/login/send-otp                                                 ║
+║   POST   /api/login/verify-otp                                               ║
+║                                                                              ║
+║   Products:                                                                 ║
+║   GET    /api/products                                                       ║
+║   GET    /api/products/:id                                                    ║
+║   POST   /api/products (admin)                                               ║
+║   PUT    /api/products/:id (admin)                                           ║
+║   DELETE /api/products/:id (admin)                                           ║
+║                                                                              ║
+║   Orders:                                                                   ║
+║   GET    /api/orders                                                         ║
+║   GET    /api/orders/history                                                  ║
+║   GET    /api/orders/:id                                                      ║
+║   POST   /api/orders                                                         ║
+║   PUT    /api/orders/:id/status                                              ║
+║                                                                              ║
+║   Tables:                                                                   ║
+║   GET    /api/tables                                                         ║
+║   PUT    /api/tables/:id/status                                              ║
+║                                                                              ║
+║   Reports:                                                                  ║
+║   GET    /api/reports/sales                                                  ║
+║   GET    /api/reports/products                                               ║
+║                                                                              ║
+║   Utility:                                                                  ║
+║   GET    /api/health                                                         ║
+║   GET    /api/users (testing only)                                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+    
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777113847000
+}
+✅ User found: michael
+✅ Order created: ORD-1777132836024
+✅ Order created: ORD-1777132837357
+✅ Order created: ORD-1777132838413
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777112007676
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777097091440
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael
+ Token received: eyJ1c2VySWQiOjE3NzY1...
+✅ Token decoded: {
+  userId: 1776589402270,
+  username: 'michael',
+  phone: '1234567890',
+  role: 'admin',
+  iat: 1777128357321
+}
+✅ User found: michael

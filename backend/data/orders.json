@@ -1,0 +1,978 @@
+[
+  {
+    "id": "ORD-1777132836024",
+    "customerName": "Test Customer",
+    "phone": "",
+    "items": [
+      {
+        "name": "Margherita Pizza",
+        "quantity": 2,
+        "price": 12.99
+      }
+    ],
+    "subtotal": 25.98,
+    "tax": 1.3,
+    "deliveryFee": 0,
+    "grandTotal": 27.28,
+    "orderType": "dine-in",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "completed",
+    "tableNumber": null,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T16:00:36.024Z",
+    "updatedAt": "2026-04-28T06:48:39.706Z"
+  },
+  {
+    "id": "ORD-1777132837357",
+    "customerName": "Test Customer 2",
+    "phone": "",
+    "items": [
+      {
+        "name": "Pepperoni Pizza",
+        "quantity": 1,
+        "price": 15.99
+      },
+      {
+        "name": "Coca Cola",
+        "quantity": 2,
+        "price": 2.99
+      }
+    ],
+    "subtotal": 21.97,
+    "tax": 1.1,
+    "deliveryFee": 0,
+    "grandTotal": 23.07,
+    "orderType": "dine-in",
+    "deliveryAddress": null,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "ready",
+    "tableNumber": null,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T16:00:37.357Z",
+    "updatedAt": "2026-04-28T06:48:37.765Z"
+  },
+  {
+    "id": "ORD-1777132838413",
+    "customerName": "Test Customer 3",
+    "phone": "",
+    "items": [
+      {
+        "name": "Chicken Burger",
+        "quantity": 3,
+        "price": 11.99
+      },
+      {
+        "name": "French Fries",
+        "quantity": 2,
+        "price": 4.99
+      }
+    ],
+    "subtotal": 45.95,
+    "tax": 2.3,
+    "deliveryFee": 0,
+    "grandTotal": 48.25,
+    "orderType": "dine-in",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "preparing",
+    "tableNumber": null,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T16:00:38.413Z",
+    "updatedAt": "2026-04-28T06:48:35.357Z"
+  },
+  {
+    "id": "ORD-1777139145683",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 1,
+        "name": "Margherita Pizza",
+        "price": 12.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 12.99,
+    "tax": 0.6495000000000001,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "1",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T17:45:45.683Z",
+    "updatedAt": "2026-04-25T17:45:45.683Z"
+  },
+  {
+    "id": "ORD-1777142554429",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 6,
+        "name": "Chocolate Cake",
+        "price": 6.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 6.99,
+    "tax": 0.34950000000000003,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "credit",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T18:42:34.429Z",
+    "updatedAt": "2026-04-25T18:42:34.429Z"
+  },
+  {
+    "id": "ORD-1777143474169",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 1,
+        "name": "michael",
+        "price": 5000,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 5000,
+    "tax": 250,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "1",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T18:57:54.169Z",
+    "updatedAt": "2026-04-25T18:57:54.169Z"
+  },
+  {
+    "id": "ORD-1777143756364",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 2,
+        "name": "Pepperoni Pizza",
+        "price": 15.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 15.99,
+    "tax": 0.7995000000000001,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T19:02:36.364Z",
+    "updatedAt": "2026-04-25T19:02:36.364Z"
+  },
+  {
+    "id": "ORD-1777143812992",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 8,
+        "name": "Garlic Bread",
+        "price": 5.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 5.99,
+    "tax": 0.29950000000000004,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "4",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T19:03:32.992Z",
+    "updatedAt": "2026-04-25T19:03:32.992Z"
+  },
+  {
+    "id": "ORD-1777143834955",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 8,
+        "name": "Garlic Bread",
+        "price": 5.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 5.99,
+    "tax": 0.29950000000000004,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "12",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T19:03:54.955Z",
+    "updatedAt": "2026-04-25T19:03:54.955Z"
+  },
+  {
+    "id": "ORD-1777145183565",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 1777139235651,
+        "name": "shampoo",
+        "price": 2000,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 2000,
+    "tax": 100,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T19:26:23.565Z",
+    "updatedAt": "2026-04-25T19:26:23.565Z"
+  },
+  {
+    "id": "ORD-1777147617548",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 2,
+        "price": 350,
+        "total": 700
+      }
+    ],
+    "subtotal": 700,
+    "tax": 56,
+    "deliveryFee": 0,
+    "grandTotal": 756,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 2,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-25T20:06:57.548Z",
+    "updatedAt": "2026-04-25T20:06:57.548Z"
+  },
+  {
+    "id": "ORD-1777176670521",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "3",
+        "name": "Caesar Salad",
+        "quantity": 15,
+        "price": 220,
+        "total": 3300
+      }
+    ],
+    "subtotal": 3300,
+    "tax": 264,
+    "deliveryFee": 0,
+    "grandTotal": 3564,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:11:10.521Z",
+    "updatedAt": "2026-04-26T04:11:10.521Z"
+  },
+  {
+    "id": "ORD-1777176686558",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "3",
+        "name": "Caesar Salad",
+        "quantity": 1,
+        "price": 220,
+        "total": 220
+      }
+    ],
+    "subtotal": 220,
+    "tax": 17.6,
+    "deliveryFee": 0,
+    "grandTotal": 237.6,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:11:26.558Z",
+    "updatedAt": "2026-04-26T04:11:26.558Z"
+  },
+  {
+    "id": "ORD-1777177848251",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "4",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 108,
+        "total": 108
+      }
+    ],
+    "subtotal": 108,
+    "tax": 8.64,
+    "deliveryFee": 0,
+    "grandTotal": 116.64,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:30:48.252Z",
+    "updatedAt": "2026-04-26T04:30:48.252Z"
+  },
+  {
+    "id": "ORD-1777177894642",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "4",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 108,
+        "total": 108
+      }
+    ],
+    "subtotal": 108,
+    "tax": 8.64,
+    "deliveryFee": 0,
+    "grandTotal": 116.64,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 3,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:31:34.642Z",
+    "updatedAt": "2026-04-26T04:31:34.642Z"
+  },
+  {
+    "id": "ORD-1777178696602",
+    "customerName": "michael",
+    "phone": "1234567890",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 1,
+        "price": 350,
+        "total": 350
+      },
+      {
+        "productId": "3",
+        "name": "Caesar Salad",
+        "quantity": 1,
+        "price": 220,
+        "total": 220
+      }
+    ],
+    "subtotal": 570,
+    "tax": 45.6,
+    "deliveryFee": 0,
+    "grandTotal": 615.6,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:44:56.602Z",
+    "updatedAt": "2026-04-26T04:44:56.602Z"
+  },
+  {
+    "id": "ORD-1777178777100",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 2,
+        "name": "Pepperoni Pizza",
+        "price": 350,
+        "quantity": 20
+      }
+    ],
+    "subtotal": 7000,
+    "tax": 350,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "1",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T04:46:17.100Z",
+    "updatedAt": "2026-04-26T04:46:17.100Z"
+  },
+  {
+    "id": "ORD-1777187068933",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 1,
+        "price": 400,
+        "total": 400
+      }
+    ],
+    "subtotal": 400,
+    "tax": 32,
+    "deliveryFee": 0,
+    "grandTotal": 432,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T07:04:28.933Z",
+    "updatedAt": "2026-04-26T07:04:28.933Z"
+  },
+  {
+    "id": "ORD-1777187091017",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 20,
+        "price": 400,
+        "total": 8000
+      }
+    ],
+    "subtotal": 8000,
+    "tax": 640,
+    "deliveryFee": 0,
+    "grandTotal": 8640,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 5,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T07:04:51.017Z",
+    "updatedAt": "2026-04-26T07:04:51.017Z"
+  },
+  {
+    "id": "ORD-1777187106156",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 19,
+        "price": 400,
+        "total": 7600
+      }
+    ],
+    "subtotal": 7600,
+    "tax": 608,
+    "deliveryFee": 0,
+    "grandTotal": 8208,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 9,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T07:05:06.156Z",
+    "updatedAt": "2026-04-26T07:05:06.156Z"
+  },
+  {
+    "id": "ORD-1777221797451",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "2",
+        "name": "Pepperoni Pizza",
+        "quantity": 1,
+        "price": 400,
+        "total": 400
+      }
+    ],
+    "subtotal": 400,
+    "tax": 32,
+    "deliveryFee": 0,
+    "grandTotal": 432,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 2,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-26T16:43:17.451Z",
+    "updatedAt": "2026-04-26T16:43:17.451Z"
+  },
+  {
+    "id": "ORD-1777262759736",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 2,
+        "name": "Pepperoni Pizza",
+        "price": 400,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 400,
+    "tax": 20,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "1",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-27T04:05:59.739Z",
+    "updatedAt": "2026-04-27T04:05:59.739Z"
+  },
+  {
+    "id": "ORD-1777263211046",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 2,
+        "name": "Pepperoni Pizza",
+        "price": 400,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 400,
+    "tax": 20,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "3",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-27T04:13:31.048Z",
+    "updatedAt": "2026-04-27T04:13:31.048Z"
+  },
+  {
+    "id": "ORD-1777263275886",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 5,
+        "name": "French Fries",
+        "price": 70,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 70,
+    "tax": 3.5,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-27T04:14:35.886Z",
+    "updatedAt": "2026-04-27T04:14:35.886Z"
+  },
+  {
+    "id": "ORD-1777356883749",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 2,
+        "name": "Pepperoni Pizza",
+        "price": 400,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 400,
+    "tax": 20,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "preparing",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T06:14:43.749Z",
+    "updatedAt": "2026-04-28T06:14:59.042Z"
+  },
+  {
+    "id": "ORD-1777358399580",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 3,
+        "name": "Caesar Salad",
+        "price": 220,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 220,
+    "tax": 11,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "3",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T06:39:59.580Z",
+    "updatedAt": "2026-04-28T06:39:59.580Z"
+  },
+  {
+    "id": "ORD-1777358778519",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 3,
+        "name": "Caesar Salad",
+        "price": 220,
+        "quantity": 1
+      },
+      {
+        "id": 4,
+        "name": "Chicken Burger",
+        "price": 108,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 328,
+    "tax": 16.400000000000002,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "5",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T06:46:18.519Z",
+    "updatedAt": "2026-04-28T06:46:18.519Z"
+  },
+  {
+    "id": "ORD-1777358902416",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 3,
+        "name": "Caesar Salad",
+        "price": 220,
+        "quantity": 1
+      },
+      {
+        "id": 4,
+        "name": "Chicken Burger",
+        "price": 108,
+        "quantity": 1
+      },
+      {
+        "id": 5,
+        "name": "French Fries",
+        "price": 70,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 398,
+    "tax": 19.900000000000002,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "6",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T06:48:22.416Z",
+    "updatedAt": "2026-04-28T06:48:22.416Z"
+  },
+  {
+    "id": "ORD-1777359005673",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "3",
+        "name": "Caesar Salad",
+        "quantity": 1,
+        "price": 220,
+        "total": 220
+      },
+      {
+        "productId": "4",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 108,
+        "total": 108
+      }
+    ],
+    "subtotal": 328,
+    "tax": 26.240000000000002,
+    "deliveryFee": 0,
+    "grandTotal": 354.24,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 4,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T06:50:05.673Z",
+    "updatedAt": "2026-04-28T06:50:05.673Z"
+  },
+  {
+    "id": "ORD-1777378779232",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "1777222353613",
+        "name": "cooking oil",
+        "quantity": 1,
+        "price": 600,
+        "total": 600
+      }
+    ],
+    "subtotal": 600,
+    "tax": 48,
+    "deliveryFee": 0,
+    "grandTotal": 648,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "ready",
+    "tableNumber": 1,
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T12:19:39.232Z",
+    "updatedAt": "2026-04-28T12:22:09.184Z"
+  },
+  {
+    "id": "ORD-1777387439747",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 7,
+        "name": "Coca Cola",
+        "price": 20,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 20,
+    "tax": 1,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": "3",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T14:43:59.747Z",
+    "updatedAt": "2026-04-28T14:43:59.747Z"
+  },
+  {
+    "id": "ORD-1777388951418",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 1777178873316,
+        "name": "chichen",
+        "price": 200,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 200,
+    "tax": 10,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "preparing",
+    "tableNumber": "10",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T15:09:11.419Z",
+    "updatedAt": "2026-04-28T15:13:45.115Z"
+  },
+  {
+    "id": "ORD-1777389199824",
+    "customerName": "Guest",
+    "phone": "",
+    "items": [
+      {
+        "id": 1777139235651,
+        "name": "shampoo",
+        "price": 2000,
+        "quantity": 1
+      },
+      {
+        "id": 1777178873316,
+        "name": "chichen",
+        "price": 200,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 2200,
+    "tax": 110,
+    "deliveryFee": 0,
+    "grandTotal": 0,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "completed",
+    "tableNumber": "2",
+    "notes": "",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T15:13:19.826Z",
+    "updatedAt": "2026-04-28T15:13:57.312Z"
+  },
+  {
+    "id": "ORD-1777389306765",
+    "customerName": "customer1",
+    "phone": "0987654321",
+    "items": [
+      {
+        "productId": "4",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 108,
+        "total": 108
+      }
+    ],
+    "subtotal": 108,
+    "tax": 8.64,
+    "deliveryFee": 0,
+    "grandTotal": 116.64,
+    "orderType": "pickup",
+    "deliveryAddress": null,
+    "paymentMethod": "cash",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "tableNumber": 5,
+    "notes": "no moyonese",
+    "estimatedDelivery": null,
+    "createdAt": "2026-04-28T15:15:06.765Z",
+    "updatedAt": "2026-04-28T15:15:06.765Z"
+  }
+]
