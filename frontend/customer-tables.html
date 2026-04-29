@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Tables</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="customer-tables.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <div id="header-nav-placeholder"></div>
+    <!-- Sidebar Navigation -->
+    <div id="sidebar-nav-placeholder"></div>
+
+
+
+    <div class="container">
+    
+        
+
+        <main class="main-content">
+            <div class="left-panel">
+                <h3>Customer Tables Management</h3>
+                <div class="tables-grid">
+                    <!-- Tables will be dynamically loaded here -->
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const API_BASE_URL = 'http://localhost:3000/api';
+
+            async function fetchTables() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/tables`);
+                    const data = await response.json();
+                    if (data.success) {
+                        renderTables(data.tables);
+                    } else {
+                        console.error('Failed to fetch tables:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching tables:', error);
+                }
+            }
+
+            function renderTables(tables) {
+                const grid = document.querySelector('.tables-grid');
+                grid.innerHTML = tables.map(table => `
+                    <div class="table-card ${table.status}" data-id="${table.id}" data-status="${table.status}" style="cursor: ${table.status === 'occupied' ? 'pointer' : 'default'};">
+                        <div class="table-number">Table ${table.number}</div>
+                        <div class="table-status" style="background:${table.status === 'free' ? '#eafaf1' : '#fdeaea'};color:${table.status === 'free' ? '#27ae60' : '#e74c3c'}">
+                            ${table.status === 'free' ? 'Available' : 'Occupied'}
+                        </div>
+                        ${table.status === 'occupied' ? '<div style="font-size:11px;color:#999;margin-top:4px;">Click to free</div>' : ''}
+                    </div>
+                `).join('');
+
+                // Add click handlers to occupied tables
+                document.querySelectorAll('.table-card.occupied').forEach(card => {
+                    card.addEventListener('click', async () => {
+                        const tableId = card.getAttribute('data-id');
+                        if (confirm('Mark this table as available?')) {
+                            await updateTableStatus(tableId, 'free');
+                        }
+                    });
+                });
+            }
+
+            async function updateTableStatus(tableId, newStatus) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/tables/${tableId}/status`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: newStatus })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        fetchTables(); // Re-render after update
+                    } else {
+                        alert('Failed to update table: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error updating table status:', error);
+                    alert('Error updating table status');
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', fetchTables);
+        </script>
+    
+
+        
+        </div>
+    </main>
+
+    <script>
+        function updateUserInfo() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+
+        const userEl = document.getElementById('userName');
+        const roleEl = document.getElementById('userRole');
+
+        console.log("userEl:", userEl);
+        console.log("roleEl:", roleEl);
+
+        if (userEl) userEl.textContent = user.username;
+        if (roleEl) roleEl.textContent = user.role;
+    }
+    fetch('header-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading header navigation:', error));
+
+    fetch('sidebar-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading sidebar navigation:', error));
+        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('roles'));
+    </script>
+</body>
+</html>

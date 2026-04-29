@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="login-signup.css">
+</head>
+
+
+<body class="login-page">
+
+<div class="container">
+    <div class="login-box">
+        <h2>Login</h2>
+        <p>Welcome back please login to your account</p>
+
+        <form id="loginForm">
+            <div class="role-select">
+                <label><input type="radio" name="role" value="admin"> Admin</label>
+                <label><input type="radio" name="role" value="operator"> Operator</label>
+                <label><input type="radio" name="role" value="cashier"> Cashier</label>
+                <label><input type="radio" name="role" value="customer"> Customer</label>
+            </div>
+
+            <div class="input-box">
+                <input type="tel" id="loginPhone" placeholder="Phone Number">
+            </div>
+
+            <div id="loginOtpSection" style="display:none;">
+                <div class="input-box">
+                    <input type="text" id="loginOtp" placeholder="Enter OTP">
+                </div>
+            </div>
+
+            <button type="button" id="loginSendOtpBtn" class="btn">Send OTP</button>
+            <button type="submit" id="loginSubmitBtn" class="btn" style="display:none;">Login</button>
+
+            <div class="remember">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <p class="signup">
+                Don't have an account? <a href="signup.html">Signup</a>
+            </p>
+
+            <p id="loginMsg"></p>
+        </form>
+    </div>
+</div>
+
+<script src="script-login-signup.js"></script>
+</body>
+</html>

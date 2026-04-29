@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="report.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="header-nav-placeholder"></div>
+    <div id="sidebar-nav-placeholder"></div>
+    <div class="container">
+        <main class="main-content">
+            <div class="left-panel">
+                <div class="reports-container">
+                    <h3>Reports & Analytics</h3>
+
+                    <!-- Out of Stock Alerts -->
+                    <div class="alerts-section">
+                        <h4> Out of Stock Alerts</h4>
+    <div id="outOfStockAlerts">
+                            <p>Loading low stock alerts (stock < 7)...</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Key Metrics -->
+                    <div class="analytics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="totalSales">₹0</div>
+                            <div class="metric-label">Total Sales Today</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="totalOrders">0</div>
+                            <div class="metric-label">Orders Today</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="avgOrderValue">₹0</div>
+                            <div class="metric-label">Average Order Value</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="topProduct">--</div>
+                            <div class="metric-label">Top Selling Product</div>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-section">
+                        <h4>📊 Sales Analytics</h4>
+                        <div class="filters-row">
+                            <div class="filter-group">
+                                <label class="filter-label">Date Range:</label>
+                                <select id="dateRange" class="filter-input">
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group" id="customDateGroup" style="display: none;">
+                                <label class="filter-label">From:</label>
+                                <input type="date" id="startDate" class="filter-input">
+                            </div>
+                            <div class="filter-group" id="customDateGroup2" style="display: none;">
+                                <label class="filter-label">To:</label>
+                                <input type="date" id="endDate" class="filter-input">
+                            </div>
+                            <button onclick="loadAnalytics()" class="btn-primary">Generate Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="charts-section">
+                        <div class="chart-container">
+                            <div class="chart-title">Sales Trend</div>
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-title">Top Selling Products</div>
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Table -->
+                    <div class="sales-table">
+                        <h4>Recent Orders</h4>
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <tr>
+                                    <td colspan="6">Loading orders...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>Settings</h2>
+            <div id="adminPanel" style="display: none;">
+                <h3>Register New Staff</h3>
+                <form id="registerStaffForm">
+                    <input type="text" id="staffUsername" placeholder="Username" required>
+                    <input type="password" id="staffPassword" placeholder="Password" required>
+                    <select id="staffRole">
+                        <option value="operator">Operator</option>
+                        <option value="cashier">Cashier</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                    <button type="submit">Register Staff</button>
+                </form>
+            </div>
+            <div id="staffPanel">
+                <p>Access restricted to your role.</p>
+            </div>
+        </div>
+    </div>
+
+<script src="script-reports.js"></script>
+<script src="script-main.js"></script>
+
+<script>
+    // Load navigation components
+    function updateUserInfo() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+
+        const userEl = document.getElementById('userName');
+        const roleEl = document.getElementById('userRole');
+
+        console.log("userEl:", userEl);
+        console.log("roleEl:", roleEl);
+
+        if (userEl) userEl.textContent = user.username;
+        if (roleEl) roleEl.textContent = user.role;
+    }
+    fetch('header-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading header navigation:', error));
+
+    fetch('sidebar-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading sidebar navigation:', error));
+        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('roles'));
+</script>
+</body>
+</html>

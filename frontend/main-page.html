@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Dashboard - Main</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="main-page.css">
+</head>
+
+<body>
+    <!-- Navigation Components -->
+    <div id="header-nav-placeholder"></div>
+    <div id="sidebar-nav-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Header Section -->
+        
+        <div class="main-content-area">
+            <!-- Left Side - Product Grid -->
+            <div class="products-section">
+                <div class="search-bar" style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                    <input type="text" id="searchInput" placeholder="Search products..." style="flex: 1; padding: 12px 15px; border: 2px solid #bdc3c7; border-radius: 8px; font-size: 14px; transition: border-color 0.3s ease;">
+                </div>
+                <div id="productsContainer" class="products-grid">
+                    <!-- Dynamic products will be loaded here by JavaScript -->
+                    <div class="loading-products">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Invoice and Payment -->
+            <div class="checkout-section">
+                <!-- Invoice Section (Left) -->
+                <div class="invoice-panel">
+                    <div class="invoice-header">
+                        <h2>INVOICE</h2>
+                        <span class="invoice-number" id="invoiceNumber">#12345</span>
+                    </div>
+
+                    <!-- Customer Section -->
+                    <div class="customer-section">
+                        <input type="text" id="customerId" placeholder="Customer ID" class="customer-input">
+                        <button class="new-user-btn">➕ New User</button>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="payment-summary">
+                        <h3>Payment Summary</h3>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                        <span id="subtotal" class="amount">₹0.00</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Tax (5%)</span>
+                            <span id="tax" class="amount">₹0.00</span>
+                        </div>
+
+                        <div class="promo-section">
+                            <input type="text" id="promoCode" placeholder="Promo Code" class="promo-input">
+                            <button id="applyPromoBtn" class="apply-btn">Apply</button>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Total</span>
+                            <span id="total" class="amount bold">₹0.00</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Discount</span>
+                            <span id="discount" class="amount text-success">₹0.00</span>
+                        </div>
+
+                        <div class="roundoff-section">
+                            <span>Roundoff</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="roundoffToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="summary-row total-payable">
+                            <span>Total Payable</span>
+                            <span id="totalPayable" class="amount large">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="cart-section">
+                        <h3>Order Items</h3>
+                            <!-- Table selection for dine-in orders -->
+                            <div style="margin-bottom: 1em;">
+                                <label for="tableSelect"><strong>Select Table:</strong></label>
+                                <select id="tableSelect">
+                                    <option value="">-- Select Available Table --</option>
+                                </select>
+                            </div>
+                            <div id="orderItems" class="order-items-list"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Method Section (Right) -->
+                <div class="payment-panel">
+                    <h3>Select Payment Method</h3>
+                    
+                    <div class="payment-methods">
+                        <button class="payment-method-btn active" data-method="cash">
+                        Cash
+                        </button>
+                        <button class="payment-method-btn" data-method="card">
+                            Card
+                        </button>
+                        <button class="payment-method-btn" data-method="credit">
+                            Credit
+                        </button>
+                    </div>
+
+                    <button id="paymentBtn" class="make-payment-btn">
+                        ✓ Make Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to load navigation components -->
+    <script>
+        function updateUserInfo() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+
+        const userEl = document.getElementById('userName');
+        const roleEl = document.getElementById('userRole');
+
+        console.log("userEl:", userEl);
+        console.log("roleEl:", roleEl);
+
+        if (userEl) userEl.textContent = user.username;
+        if (roleEl) roleEl.textContent = user.role;
+    }
+    fetch('header-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading header navigation:', error));
+
+    fetch('sidebar-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading sidebar navigation:', error));
+        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('roles'));
+    </script>
+
+    <!-- Main Application Script -->
+    <script>
+        // ===== GLOBAL VARIABLES =====
+        let orderItems = [];
+        let selectedPaymentMethod = 'cash';
+        let allProducts = [];
+
+        // ===== PRODUCT MANAGEMENT =====
+        // Fetch products from API
+async function loadProducts() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                const data = await response.json();
+                console.log('API Response:', data);
+                const products = data.success ? data.products : data;
+                displayProducts(products);
+                allProducts = products;
+                console.log('Loaded', products.length, 'products');
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsContainer').innerHTML = 
+                    '<p>Error loading products. Make sure the backend server is running on port 3000.</p>';
+            }
+        }
+
+        // Display products in grid
+        function displayProducts(items) {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+
+            // Limit to 20 products
+            const productsToDisplay = items.slice(0, 20);
+
+            productsToDisplay.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image || 'https://via.placeholder.com/150?text=No+Image'}" alt="${product.name}" style="width:100%;height:120px;object-fit:cover;border-radius:4px;" />
+                    </div>
+                    <div class="product-info">
+                        <h4>${product.name}</h4>
+                        <p class="product-price">₹${(product.price).toFixed(2)}</p>
+                        <button class="add-btn" onclick="addProduct(${product.id}, '${product.name}', ${product.price})">
+                            Add to Cart
+                        </button>
+                    </div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+        
+        // ===== CART MANAGEMENT =====
+        // Patch: Attach table number to order
+        function getSelectedTable() {
+            return document.getElementById('tableSelect')?.value || localStorage.getItem('selectedTable') || '';
+        }
+        // Add product to cart or increment quantity
+        function addProduct(id, name, price) {
+            const existingItem = orderItems.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                orderItems.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateOrder();
+            updateInvoice();
+        }
+
+        // Patch: Override place order logic to include table
+        const paymentBtn = document.getElementById('paymentBtn');
+        if (paymentBtn) {
+            paymentBtn.addEventListener('click', function(e) {
+                const tableNum = getSelectedTable();
+                if (!tableNum) {
+                    alert('Please select a table before placing your order.');
+                    return;
+                }
+                // Attach tableNum to orderItems or order object as needed
+                // Example: localStorage.setItem('selectedTable', tableNum);
+                // Continue with existing payment logic...
+            });
+        }
+        
+
+        // Remove item from cart
+        function removeItem(index) {
+            orderItems.splice(index, 1);
+            updateOrder();
+            updateInvoice();
+        }
+
+        // Update order display in DOM
+        function updateOrder() {
+            const container = document.getElementById('orderItems');
+            
+            if (orderItems.length === 0) {
+                container.innerHTML = '<p class="empty-cart">No items in cart</p>';
+                return;
+            }
+
+            container.innerHTML = orderItems.map((item, index) => `
+                <div class="order-item">
+                    <div class="item-details">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-price">₹${(item.price).toFixed(2)}</span>
+                    </div>
+                    <div class="item-controls">
+                        <input type="number" min="1" value="${item.quantity}" 
+                               onchange="updateQuantity(${index}, this.value)">
+                        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update item quantity
+        function updateQuantity(index, newQuantity) {
+            const qty = parseInt(newQuantity);
+            if (qty > 0) {
+                orderItems[index].quantity = qty;
+                updateOrder();
+                updateInvoice();
+            }
+        }
+
+        // ===== INVOICE CALCULATION =====
+        function updateInvoice() {
+            // Calculate subtotal
+            const subtotal = orderItems.reduce((sum, item) => {
+                return sum + (item.price * item.quantity);
+            }, 0);
+
+            // Calculate tax (5%)
+            const taxRate = 0.05;
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax;
+
+            // Get discount
+            const discountEl = document.getElementById('discount');
+            const discount = parseFloat(discountEl?.textContent?.replace('₹', '') || 0);
+
+            // Calculate total payable
+            let totalPayable = total - discount;
+
+            // Handle roundoff
+            const roundoffToggle = document.getElementById('roundoffToggle');
+            if (roundoffToggle && roundoffToggle.checked) {
+                totalPayable = Math.round(totalPayable);
+            }
+
+            // Update DOM
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+            document.getElementById('totalPayable').textContent = `₹${totalPayable.toFixed(2)}`;
+        }
+
+        // ===== PAYMENT PROCESSING =====
+        // Generate sequential Invoice Number starting from 000001
+        function generateInvoiceNumber() {
+            let lastInvoice = parseInt(localStorage.getItem('lastInvoiceNumber') || '0');
+            lastInvoice += 1;
+            localStorage.setItem('lastInvoiceNumber', lastInvoice);
+            return '#' + String(lastInvoice).padStart(6, '0');
+        }
+
+        // Handle payment method selection
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate initial invoice number
+            const invoiceNumber = generateInvoiceNumber();
+            const invoiceNumberEl = document.getElementById('invoiceNumber');
+            if (invoiceNumberEl) {
+                invoiceNumberEl.textContent = invoiceNumber;
+            }
+
+            // Payment method buttons (new)
+            const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
+            paymentMethodBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    paymentMethodBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    selectedPaymentMethod = this.dataset.method;
+                    console.log('Payment method selected:', selectedPaymentMethod);
+                });
+            });
+
+            // Old payment buttons (fallback)
+            const paymentButtons = document.querySelectorAll('.payment-btn');
+            paymentButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    paymentButtons.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    selectedPaymentMethod = this.dataset.method;
+                });
+            });
+
+            // Payment button click handler
+            const paymentBtn = document.getElementById('paymentBtn');
+            if (paymentBtn) {
+                paymentBtn.addEventListener('click', makePayment);
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            function performSearch() {
+                const query = searchInput.value.toLowerCase();
+                if (!query) {
+                    displayProducts(allProducts);
+                    return;
+                }
+                const filtered = allProducts.filter(product =>
+                    product.name.toLowerCase().includes(query)
+                );
+                displayProducts(filtered);
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', performSearch);
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', performSearch);
+            }
+
+            // Roundoff toggle
+            const roundoffToggle = document.getElementById('roundoffToggle');
+            if (roundoffToggle) {
+                roundoffToggle.addEventListener('change', updateInvoice);
+            }
+
+            // Table select change listener
+            const tableSelect = document.getElementById('tableSelect');
+            if (tableSelect) {
+                tableSelect.addEventListener('change', function() {
+                    localStorage.setItem('selectedTable', tableSelect.value);
+                });
+            }
+
+            // Set current date
+            const today = new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+
+            // Load user info and products
+            loadUserInfo();
+            setTimeout(() => loadProducts(), 100);
+            
+            // Load available tables into dropdown
+            setTimeout(() => loadTablesDropdown(), 200);
+        });
+
+        // Complete payment and save order
+        async function makePayment() {
+            if (orderItems.length === 0) {
+                alert('No items in cart!');
+                return;
+            }
+
+            const tableNum = getSelectedTable();
+            if (!tableNum) {
+                alert('Please select a table before placing your order.');
+                return;
+            }
+
+            // Calculate totals
+            const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+
+            const order = {
+                id: Date.now(),
+                items: orderItems,
+                subtotal: subtotal,
+                tax: tax,
+                total: total,
+                paymentMethod: selectedPaymentMethod,
+                timestamp: new Date().toISOString(),
+                status: 'pending',
+                tableNumber: tableNum
+            };
+
+            // Save to backend API
+            try {
+                await fetch('http://localhost:3000/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(order)
+                });
+
+                // Mark table as occupied
+                await updateTableStatus(tableNum, 'occupied');
+            } catch (e) {
+                console.error('Failed to save order to backend:', e);
+            }
+
+            // Save to localStorage for fallback
+            let cashierOrders = JSON.parse(localStorage.getItem('cashierOrders')) || [];
+            cashierOrders.push(order);
+            localStorage.setItem('cashierOrders', JSON.stringify(cashierOrders));
+
+            // Show confirmation
+            alert(`Payment of ₹${total.toFixed(2)} via ${selectedPaymentMethod.toUpperCase()} completed successfully!`);
+
+            // Reset cart
+            orderItems = [];
+            updateOrder();
+            updateInvoice();
+            selectedPaymentMethod = 'cash';
+
+            // Reset payment button style
+            document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Refresh table dropdown to remove occupied table
+            localStorage.removeItem('selectedTable');
+            loadTablesDropdown();
+        }
+
+        // ===== TABLE MANAGEMENT =====
+        async function loadTablesDropdown() {
+            try {
+                const response = await fetch('http://localhost:3000/api/tables');
+                const data = await response.json();
+                const tableSelect = document.getElementById('tableSelect');
+                if (!tableSelect || !data.success) return;
+
+                // Keep the default option
+                tableSelect.innerHTML = '<option value="">-- Select Available Table --</option>';
+
+                // Only add tables with status 'free'
+                const freeTables = data.tables.filter(t => t.status === 'free');
+                freeTables.forEach(table => {
+                    const option = document.createElement('option');
+                    option.value = table.number;
+                    option.textContent = `Table ${table.number}`;
+                    tableSelect.appendChild(option);
+                });
+
+                // Restore selection if present and still available
+                const savedTable = localStorage.getItem('selectedTable');
+                if (savedTable && freeTables.find(t => String(t.number) === savedTable)) {
+                    tableSelect.value = savedTable;
+                }
+            } catch (error) {
+                console.error('Error loading tables:', error);
+            }
+        }
+
+        async function updateTableStatus(tableNumber, status) {
+            try {
+                // First, fetch all tables to find the table ID by number
+                const response = await fetch('http://localhost:3000/api/tables');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    console.error('Failed to fetch tables');
+                    return;
+                }
+                
+                const table = data.tables.find(t => String(t.number) === String(tableNumber));
+                if (!table) {
+                    console.error('Table not found:', tableNumber);
+                    return;
+                }
+                
+                // Update table status
+                const updateResponse = await fetch(`http://localhost:3000/api/tables/${table.id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: status })
+                });
+                
+                const updateData = await updateResponse.json();
+                if (updateData.success) {
+                    console.log(`✅ Table ${tableNumber} marked as ${status}`);
+                } else {
+                    console.error('Failed to update table status:', updateData.message);
+                }
+            } catch (error) {
+                console.error('Error updating table status:', error);
+            }
+        }
+
+        // ===== USER MANAGEMENT =====
+        async function loadUserInfo() {
+            const token = localStorage.getItem('token');
+            const cachedUser = localStorage.getItem('user');
+            
+            console.log('Checking token:', token ? 'Found ' : 'Not found ');
+            console.log(' Checking cached user:', cachedUser ? 'Found ' : 'Not found ');
+            
+            // If we have cached user data, use it as fallback
+            if (cachedUser && !token) {
+                console.log('Token missing but cached user found, updating badge...');
+                try {
+                    const user = JSON.parse(cachedUser);
+                    const roleBadge = document.getElementById('user-role-badge');
+                    if (roleBadge) {
+                        roleBadge.textContent = `Role: ${user.role.toUpperCase()}`;
+                        roleBadge.className = `user-role-badge ${user.role}`;
+                    }
+                    return;
+                } catch (e) {
+                    console.error(' Could not parse cached user');
+                }
+            }
+            
+            // Redirect to login if no token
+            if (!token) {
+                console.log('No token found, redirecting to login');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 500);
+                return;
+            }
+
+            try {
+                console.log('Fetching user info from API...');
+                
+                // Fetch user data from API
+                const response = await fetch('http://localhost:3000/api/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('📬 API Response status:', response.status);
+                const data = await response.json();
+                console.log('📦 API Response data:', data);
+
+                if (data.success && data.user) {
+                    // Save to localStorage for fallback
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', data.user.role);
+                    localStorage.setItem('username', data.user.username);
+                    
+                    // Update role badge
+                    const roleBadge = document.getElementById('user-role-badge');
+                    if (roleBadge) {
+                        roleBadge.textContent = `Role: ${data.user.role.toUpperCase()}`;
+                        roleBadge.className = `user-role-badge ${data.user.role}`;
+                    }
+                    console.log('✅ User authenticated from API:', data.user.username);
+                } else {
+                    console.error('❌ User data not available:', data.message);
+                    // Try to use cached user data instead
+                    if (cachedUser) {
+                        console.log('⚠️ Using cached user data as fallback');
+                        try {
+                            const user = JSON.parse(cachedUser);
+                            const roleBadge = document.getElementById('user-role-badge');
+                            if (roleBadge) {
+                                roleBadge.textContent = `Role: ${user.role.toUpperCase()}`;
+                                roleBadge.className = `user-role-badge ${user.role}`;
+                            }
+                        } catch (e) {
+                            console.error('Could not use cached user:', e);
+                            localStorage.removeItem('token');
+                            window.location.href = 'login.html';
+                        }
+                    } else {
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+                // Try cached data first
+                if (cachedUser) {
+                    console.log('API error, using cached user data');
+                    try {
+                        const user = JSON.parse(cachedUser);
+                        const roleBadge = document.getElementById('user-role-badge');
+                        if (roleBadge) {
+                            roleBadge.textContent = `Role: ${user.role.toUpperCase()}`;
+                            roleBadge.className = `user-role-badge ${user.role}`;
+                        }
+                    } catch (e) {
+                        console.error('Could not use cached user:', e);
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                    }
+                } else {
+                    // Clear token and redirect
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userPhone');
+            localStorage.removeItem('cartItems');
+            window.location.href = 'login.html';
+        }
+
+    </script>
+</body>
+</html>

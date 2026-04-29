@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Orders</title>
+    <link rel="stylesheet" href="main-page.css">
+    <link rel="stylesheet" href="cashier-orders.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <div id="header-nav-placeholder"></div>
+    <!-- Sidebar Navigation -->
+    <div id="sidebar-nav-placeholder"></div>
+        
+
+    <div class="container">
+    
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="left-panel">
+                <h3>Cashier Orders Management</h3>
+                <div class="order-controls" style="margin-bottom: 20px;">
+                        <button class="filter-btn" onclick="filterOrders('all')">All Orders</button>
+                        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterOrders('preparing')">Preparing</button>
+                        <button class="filter-btn" onclick="filterOrders('ready')">Ready</button>
+                        <button class="filter-btn" onclick="filterOrders('completed')">Completed</button>
+                    </div>
+                    <div class="orders-list" id="ordersList">
+                    <!-- Orders will be dynamically loaded here -->
+                </div>
+                </div>
+
+                
+            </div>
+        </main>
+    </div>
+
+    
+    </main>
+
+    <script>
+        function updateUserInfo() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+
+        const userEl = document.getElementById('userName');
+        const roleEl = document.getElementById('userRole');
+
+        console.log("userEl:", userEl);
+        console.log("roleEl:", roleEl);
+
+        if (userEl) userEl.textContent = user.username;
+        if (roleEl) roleEl.textContent = user.role;
+    }
+    fetch('header-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading header navigation:', error));
+
+    fetch('sidebar-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading sidebar navigation:', error));
+        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('roles'));
+    </script>
+
+
+<script src="script-cashier-orders.js"></script>
+</body>
+</html>

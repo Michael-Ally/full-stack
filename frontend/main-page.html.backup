@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant POS - Dashboard</title>
+    <link rel="stylesheet" href="main-page.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <div id="header-nav-placeholder"></div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div id="sidebar-nav-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <h3>Products</h3>
+            <input type="text" id="search" placeholder="Search products..." style="width: 100%; padding: 10px; margin-bottom: 20px;">
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will load here -->
+            </div>
+            <h3>Order Items</h3>
+            <div id="orderItems" style="min-height: 200px; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+                No items added yet
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <h3>Invoice</h3>
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Tax (5%):</span>
+                    <span id="tax">₹0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; padding-top: 10px; border-top: 1px solid #ddd;">
+                    <span>TOTAL:</span>
+                    <span id="total">₹0.00</span>
+                </div>
+            </div>
+
+            <h4>Payment Method</h4>
+            <button class="payment-btn" data-method="Cash">💵 Cash</button>
+            <button class="payment-btn" data-method="Card">💳 Card</button>
+            <button class="payment-btn" data-method="UPI">📱 UPI</button>
+
+            <button class="make-payment" onclick="makePayment()">✓ Make Payment</button>
+        </div>
+    </main>
+
+    <script>
+        // Load navigation components
+        fetch('header-nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header navigation:', error));
+
+        fetch('sidebar-nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading sidebar navigation:', error));
+
+        let products = [];
+        let orderItems = [];
+
+        // Fetch products
+        async function loadProducts() {
+            try {
+                const res = await fetch('http://localhost:3000/api/products');
+                const data = await res.json();
+                if (data.success) {
+                    products = data.products;
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsGrid').innerHTML = '<p>Error loading products</p>';
+            }
+        }
+
+        function displayProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = items.slice(0, 20).map(p => `
+                <div class="product-card" onclick="addProduct('${p.id}', '${p.name}', ${p.price})">
+                    <div class="product-name">${p.name}</div>
+                    <div style="font-size: 12px; color: #666;">SKU: ${p.sku}</div>
+                    <div class="product-price">₹${p.price.toFixed(2)}</div>
+                    <button class="add-btn" onclick="event.stopPropagation(); addProduct('${p.id}', '${p.name}', ${p.price})">Add</button>
+                </div>
+            `).join('');
+        }
+
+        function addProduct(id, name, price) {
+            const existing = orderItems.find(x => x.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                orderItems.push({id, name, price, qty: 1});
+            }
+            updateOrder();
+        }
+
+        function updateOrder() {
+            const itemsDiv = document.getElementById('orderItems');
+            if (orderItems.length === 0) {
+                itemsDiv.innerHTML = 'No items added yet';
+            } else {
+                itemsDiv.innerHTML = orderItems.map((item, i) => `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <div>
+                            <div>${item.name}</div>
+                            <small>₹${item.price.toFixed(2)} × ${item.qty}</small>
+                        </div>
+                        <div>
+                            <span style="font-weight: bold;">₹${(item.price * item.qty).toFixed(2)}</span>
+                            <button onclick="removeItem(${i})" style="margin-left: 10px; padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer;">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            updateInvoice();
+        }
+
+        function removeItem(index) {
+            orderItems.splice(index, 1);
+            updateOrder();
+        }
+
+        function updateInvoice() {
+            const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        function makePayment() {
+            if (orderItems.length === 0) {
+                alert('No items in order!');
+                return;
+            }
+
+            const selectedPayment = document.querySelector('.payment-btn.selected');
+            if (!selectedPayment) {
+                alert('Please select a payment method!');
+                return;
+            }
+
+            const paymentMethod = selectedPayment.dataset.method;
+            const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+
+            const order = {
+                id: Date.now().toString(),
+                items: orderItems,
+                subtotal: subtotal,
+                tax: tax,
+                total: total,
+                paymentMethod: paymentMethod,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+
+            // Save to localStorage for cashier system
+            let existingOrders = JSON.parse(localStorage.getItem('cashierOrders')) || [];
+            existingOrders.unshift(order);
+            localStorage.setItem('cashierOrders', JSON.stringify(existingOrders));
+
+            // Reset order
+            orderItems = [];
+            updateOrder();
+
+            // Reset payment selection
+            document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+
+            alert(`Payment successful! Total: ₹${total.toFixed(2)}`);
+        }
+
+        // Payment method selection
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('payment-btn')) {
+                document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+                e.target.classList.add('selected');
+            }
+        });
+
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            displayProducts(filtered);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>🍽️ Restaurant POS</h3>
+            <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+        </div>
+        <div class="user-info" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div id="userName" style="font-weight: bold;">Loading...</div>
+            <div id="userRole" style="font-size: 12px; opacity: 0.8;">Role</div>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="main-page.html" class="active"><span>🏠</span> <span>Dashboard</span></a>
+            <a href="cashier-orders.html"><span>📋</span> <span>Orders History</span></a>
+            <a href="customer-tables.html"><span>👥</span> <span>Customer Tables</span></a>
+            <a href="customer-order.html"><span>🛒</span> <span>Customer Order</span></a>
+            <a href="cart.html"><span>🛍️</span> <span>Cart</span></a>
+            <a href="checkout.html"><span>💳</span> <span>Checkout</span></a>
+            <a href="report.html"><span>📊</span> <span>Reports</span></a>
+            <a href="settings.html"><span>⚙️</span> <span>Settings</span></a>
+            <a href="#" onclick="logout()"><span>🚪</span> <span>Logout</span></a>
+        </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <h3>Products</h3>
+                <input type="text" id="search" placeholder="Search products..." style="width: 100%; padding: 10px; margin-bottom: 20px;">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will load here -->
+                </div>
+                <h3>Order Items</h3>
+                <div id="orderItems" style="min-height: 200px; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+                    No items added yet
+                </div>
+            </div>
+            
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <h3>Invoice</h3>
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₹0.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Tax (5%):</span>
+                        <span id="tax">₹0.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; padding-top: 10px; border-top: 1px solid #ddd;">
+                        <span>TOTAL:</span>
+                        <span id="total">₹0.00</span>
+                    </div>
+                </div>
+                
+                <h4>Payment Method</h4>
+                <button class="payment-btn" data-method="Cash">💵 Cash</button>
+                <button class="payment-btn" data-method="Card">💳 Card</button>
+                <button class="payment-btn" data-method="UPI">📱 UPI</button>
+                
+                <button class="make-payment" onclick="makePayment()">✓ Make Payment</button>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        let products = [];
+        let orderItems = [];
+        let selectedPayment = null;
+        
+        // Fetch products
+        async function loadProducts() {
+            try {
+                const res = await fetch('http://localhost:3000/api/products');
+                const data = await res.json();
+                if (data.success) {
+                    products = data.products;
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsGrid').innerHTML = '<p>Error loading products</p>';
+            }
+        }
+        
+        function displayProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = items.slice(0, 20).map(p => `
+                <div class="product-card" onclick="addProduct('${p.id}', '${p.name}', ${p.price})">
+                    <div class="product-name">${p.name}</div>
+                    <div style="font-size: 12px; color: #666;">SKU: ${p.sku}</div>
+                    <div class="product-price">₹${p.price.toFixed(2)}</div>
+                    <button class="add-btn" onclick="event.stopPropagation(); addProduct('${p.id}', '${p.name}', ${p.price})">Add</button>
+                </div>
+            `).join('');
+        }
+        
+        function addProduct(id, name, price) {
+            const existing = orderItems.find(x => x.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                orderItems.push({id, name, price, qty: 1});
+            }
+            updateOrder();
+        }
+        
+        function updateOrder() {
+            const itemsDiv = document.getElementById('orderItems');
+            if (orderItems.length === 0) {
+                itemsDiv.innerHTML = 'No items added yet';
+            } else {
+                itemsDiv.innerHTML = orderItems.map((item, i) => `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <div>
+                            <div>${item.name}</div>
+                            <small>₹${item.price.toFixed(2)} × ${item.qty}</small>
+                        </div>
+                        <div>
+                            <span style="font-weight: bold;">₹${(item.price * item.qty).toFixed(2)}</span>
+                            <button onclick="removeItem(${i})" style="margin-left: 10px; padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer;">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            updateInvoice();
+        }
+        
+        function removeItem(index) {
+            orderItems.splice(index, 1);
+            updateOrder();
+        }
+        
+        function updateInvoice() {
+            const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+            
+            document.getElementById('subtotal').textContent = '₹' + subtotal.toFixed(2);
+            document.getElementById('tax').textContent = '₹' + tax.toFixed(2);
+            document.getElementById('total').textContent = '₹' + total.toFixed(2);
+        }
+        
+        document.querySelectorAll('.payment-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedPayment = btn.dataset.method;
+            });
+        });
+        
+        function makePayment() {
+            if (orderItems.length === 0) {
+                alert('Please add items first');
+                return;
+            }
+            if (!selectedPayment) {
+                alert('Please select a payment method');
+                return;
+            }
+            alert(`Payment of ₹${document.getElementById('total').textContent} via ${selectedPayment}`);
+            orderItems = [];
+            updateOrder();
+        }
+    
+        
+        // Load products on page load
+        window.addEventListener('load', function() {
+            loadProducts();
+            loadUserInfo();
+        });
+        
+        function loadUserInfo() {
+            const user = localStorage.getItem('user');
+            const userRole = localStorage.getItem('userRole');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const userRoleDiv = document.getElementById('userRole');
+            
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    userInfo.textContent = `Welcome back, ${userData.username}!`;
+                    userName.textContent = userData.username;
+                    userRoleDiv.textContent = userRole || 'Operator';
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    userInfo.textContent = 'Welcome, Operator!';
+                    userName.textContent = 'Operator';
+                    userRoleDiv.textContent = 'Operator';
+                }
+            } else {
+                userInfo.textContent = 'Welcome, Guest!';
+                userName.textContent = 'Guest';
+                userRoleDiv.textContent = 'Guest';
+            }
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Hamburger Menu Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            
+            // Hamburger menu toggle
+            hamburgerMenu.addEventListener('click', function() {
+                hamburgerMenu.classList.toggle('active');
+                sidebar.classList.toggle('open');
+            });
+            
+            // Sidebar collapse toggle
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !hamburgerMenu.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                    hamburgerMenu.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

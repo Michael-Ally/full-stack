@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+<link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <div id="header-nav-placeholder"></div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div id="sidebar-nav-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+    <style>
+        .checkout-full {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .checkout {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .order-summary {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .checkout-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .order-section {
+            margin-bottom: 2rem;
+        }
+
+        .order-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #555;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .order-details {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .detail-row strong {
+            color: #333;
+        }
+
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .item-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .item-price {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .bill {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .bill .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            font-size: 1rem;
+        }
+
+        .bill .row.total {
+            border-top: 2px solid #ddd;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .payments {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .pay {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .pay:hover {
+            border-color: #3498db;
+            background: #f0f7ff;
+        }
+
+        .pay.selected {
+            border-color: #2ecc71;
+            background: #f0f7f0;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .pay.wallet::before { content: "💳 "; }
+        .pay.card::before { content: "💰 "; }
+        .pay.cash::before { content: "💵 "; }
+        .pay.gift::before { content: "🎁 "; }
+
+        .checkout-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .checkout-actions button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #7f8c8d;
+        }
+
+        .complete {
+            background: #2ecc71;
+            color: white;
+            font-weight: bold;
+        }
+
+        .complete:hover:not(:disabled) {
+            background: #27ae60;
+        }
+
+        .complete:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .payment-processing {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .payment-processing::after {
+            content: '';
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert.warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-full {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .payments {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>🍽️ Restaurant POS</h3>
+            <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+        </div>
+        <div class="user-info" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div id="userName" style="font-weight: bold;">Loading...</div>
+            <div id="userRole" style="font-size: 12px; opacity: 0.8;">Role</div>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="main-page.html"><span>🏠</span> <span>Dashboard</span></a>
+            <a href="cashier-orders.html"><span>📋</span> <span>Orders History</span></a>
+            <a href="customer-tables.html"><span>👥</span> <span>Customer Tables</span></a>
+            <a href="customer-order.html"><span>🛒</span> <span>Customer Order</span></a>
+            <a href="cart.html"><span>🛍️</span> <span>Cart</span></a>
+            <a href="checkout.html" class="active"><span>💳</span> <span>Checkout</span></a>
+            <a href="report.html"><span>📊</span> <span>Reports</span></a>
+            <a href="settings.html"><span>⚙️</span> <span>Settings</span></a>
+            <a href="#" onclick="logout()"><span>🚪</span> <span>Logout</span></a>
+        </nav>
+    </aside>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Navigation</h3>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="main-page.html">🏠 Dashboard</a>
+                <a href="cashier-orders.html">📋 Orders History</a>
+                <a href="customer-tables.html">👥 Customer Tables</a>
+                <a href="customer-order.html">🛒 Customer Order</a>
+                <a href="cart.html">🛍️ Cart</a>
+                <a href="checkout.html" class="active">💳 Checkout</a>
+                <a href="report.html">📊 Reports</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="left-panel">
+                <div class="checkout-full" style="display: flex; gap: 2rem; max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+                    <div class="checkout" style="flex: 1; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h2 class="checkout-title">Order Summary</h2>
+
+                        <div class="alert warning" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 15px; margin-bottom: 20px;">
+                            💳 This is a <strong>Demo Payment</strong> - No actual money will be charged
+                        </div>
+
+            <div class="order-section">
+                <h3>Items</h3>
+                <div class="cart-items" id="cartItems">
+                    <!-- Items will be loaded here -->
+                </div>
+            </div>
+
+            <div class="bill">
+                <div class="row"><span>Subtotal</span><span id="subtotal">₹ 0.00</span></div>
+                <div class="row"><span>Tax (8%)</span><span id="tax">₹ 0.00</span></div>
+                <div class="row"><span>Delivery Fee</span><span id="deliveryFee">₹ 0.00</span></div>
+                <div class="row total"><span>Total</span><span id="total">₹ 0.00</span></div>
+            </div>
+
+            <div class="order-section">
+                <h3>Payment Method</h3>
+                <div class="payments">
+                    <button class="pay wallet" onclick="selectPaymentMethod('wallet')">Wallet</button>
+                    <button class="pay card" onclick="selectPaymentMethod('card')">Credit Card</button>
+                    <button class="pay cash" onclick="selectPaymentMethod('cash')">Cash</button>
+                    <button class="pay gift" onclick="selectPaymentMethod('gift')">Gift Card</button>
+                </div>
+            </div>
+
+            <div class="checkout-actions">
+                <button onclick="goBackToOrder()" class="btn">Back to Order</button>
+                <button id="completeBtn" class="complete" onclick="completePayment()">Complete Payment</button>
+            </div>
+        </div>
+
+        <!-- Order Summary Panel -->
+        <div class="order-summary">
+            <h3>Order Details</h3>
+            
+            <div class="order-details">
+                <div class="detail-row">
+                    <strong>Order Type:</strong>
+                    <span id="orderTypeDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Customer:</strong>
+                    <span id="customerDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Items Count:</strong>
+                    <span id="itemCountDisplay">-</span>
+                </div>
+            </div>
+
+            <div id="tableSection" class="order-details" style="display: none;">
+                <h4>Table Information</h4>
+                <div class="detail-row">
+                    <strong>Table Number:</strong>
+                    <span id="tableNumberDisplay">-</span>
+                </div>
+            </div>
+
+            <div id="deliverySection" class="order-details" style="display: none;">
+                <h4>Delivery Address</h4>
+                <div class="detail-row">
+                    <strong>Street:</strong>
+                    <span id="streetDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>City:</strong>
+                    <span id="cityDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>ZIP Code:</strong>
+                    <span id="zipDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Phone:</strong>
+                    <span id="phoneDisplay">-</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Est. Delivery:</strong>
+                    <span id="etaDisplay">~30 minutes</span>
+                </div>
+            </div>
+
+            <div id="notesSection" class="order-details" style="display: none;">
+                <h4>Special Instructions</h4>
+                <p id="notesDisplay" style="margin: 0; font-style: italic;">-</p>
+            </div>
+
+            <div class="order-details">
+                <h4>Payment Status</h4>
+                <div class="detail-row">
+                    <strong>Status:</strong>
+                    <span id="paymentStatusDisplay" style="color: #888;">Pending</span>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content order-confirmation" style="text-align: center;">
+            <h2>✅ Payment Successful!</h2>
+            <p style="margin: 1rem 0;">Your order has been confirmed</p>
+            <div id="receiptContent"></div>
+            <button onclick="viewOrderStatus()" class="confirm-btn" style="margin-top: 1rem;">View Order Status</button>
+            <button onclick="continueOrdering()" class="confirm-btn" style="background: #95a5a6;">Continue Ordering</button>
+        </div>
+    </div>
+    </main>
+
+    <script>
+        // Load navigation components
+        fetch('header-nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header navigation:', error));
+
+        fetch('sidebar-nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading sidebar navigation:', error));
+    </script>
+
+<script src="script-checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* ==================== CART PAGE SPECIFIC ==================== */
+.cart-full {
+    padding: 20px;
+}
+
+.cart-items {
+    min-height: 300px;
+}
+
+.cart-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn.complete {
+    background: #3498db;
+    color: white;
+}

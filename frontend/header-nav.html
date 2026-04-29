@@ -1,0 +1,106 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Navigation</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="header-nav.css">
+</head>
+<!-- Header Navigation Component -->
+<header class="header-nav">
+    <div class="header-content">
+        <div class="logo-section">
+            <h2>POS</h2>
+        </div>
+        <div class="user-section">
+            <div class="user-info">
+                <span id="userName">Loading..</span>
+                <span id="userRole" class="user-role">Role</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</header>
+<style></style>
+
+
+
+<script>
+const API_URL = 'http://localhost:3000/api';
+
+// Load user information from backend API
+async function loadUserInfo() {
+    // Wait for elements to exist with multiple retries
+    const userName = document.getElementById('userName');
+    const userRoleDiv = document.getElementById('userRole');
+    
+    if (!userName || !userRoleDiv) {
+        console.log(' Elements not found, retrying in 100ms...');
+        setTimeout(loadUserInfo, 100);
+        return;
+    }
+
+    console.log(' Elements found, loading user data...');
+
+    try {
+        const token = localStorage.getItem('token');
+        const cachedUsername = localStorage.getItem('username');
+        const cachedUserRole = localStorage.getItem('userRole');
+        
+        console.log('Cached data:', { username: cachedUsername, role: cachedUserRole });
+        
+        //fetch fresh data from API
+        if (token) {
+            console.log(' Token found, fetching fresh data from API...');
+            try {
+                const response = await fetch(`${API_URL}/me`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 5000
+                });
+
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                if (data.success && data.user) {
+                    userName.textContent = data.user.username;
+                    userRoleDiv.textContent = (data.user.role || 'User').toUpperCase();
+                    console.log('User data loaded from API:', data.user.username);
+                    return;
+                }
+            } catch (apiError) {
+                console.warn('API fetch failed, using cached data:', apiError.message);
+            }
+        }
+
+        // Use cached data as fallback
+        console.log('Using cached/localStorage data');
+        userName.textContent = cachedUsername || 'Guest';
+        userRoleDiv.textContent = (cachedUserRole || 'Guest').toUpperCase();
+        
+    } catch (error) {
+        console.error(' Error in loadUserInfo:', error);
+        userName.textContent = 'Error';
+        userRoleDiv.textContent = 'ERROR';
+    }
+}
+
+// Logout function
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userPhone');
+        localStorage.removeItem('cartItems');
+        window.location.href = 'login.html';
+    }
+}
+
+// Initialize after a small delay to ensure DOM is ready
+setTimeout(loadUserInfo, 50);
+document.addEventListener('DOMContentLoaded', loadUserInfo);
+</script>

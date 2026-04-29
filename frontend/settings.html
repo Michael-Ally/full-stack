@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <div id="header-nav-placeholder"></div>
+    <div id="sidebar-nav-placeholder"></div>
+    <div class="main-content">
+        <div class="settings-container">
+            <div class="settings-section">
+                <h3>Add New Product</h3>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productSKU">SKU</label>
+                        <input type="text" id="productSKU" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price (₹)</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory">
+                            <option value="Food">Food</option>
+                            <option value="Beverage">Beverage</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Image URL</label>
+                        <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Add Product</button>
+                </form>
+            </div>
+            
+            <div class="settings-section-existing">
+                <h3>Existing Products</h3>
+                <div id="productsList" class="products-list">
+                    <!-- Products will be loaded here - Low stock (<7) clickable for reorder -->
+                </div>
+        </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API_URL}/products`);
+                const data = await res.json();
+                console.log('API Response:', data);
+                if (data.success) {
+                    displayProducts(data.products);
+                } else {
+                    console.error('API error:', data.message);
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                const sampleProducts = [
+                    {id: '1', name: 'Margherita Pizza', sku: 'PIZZA-MARG', price: 12.99, stock: 25, category: 'Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300'},
+                    {id: '2', name: 'Pepperoni Pizza', sku: 'PIZZA-PEPP', price: 15.99, stock: 3, category: 'Pizza', image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300'},
+                    {id: '8', name: 'Garlic Bread', sku: 'SIDE-GARLIC', price: 5.99, stock: 0, category: 'Sides', image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=300'}
+                ];
+                displayProducts(sampleProducts);
+            }
+        }
+
+        function escapeHTML(str) {
+            if (!str) return "";
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        function displayProducts(products) {
+            const container = document.getElementById('productsList');
+            if (!container) return;
+
+            container.innerHTML = products.map(p => {
+                const isLowStock = p.stock < 7;
+                const lowStockClass = isLowStock ? 'low-stock' : '';
+                const reorderBtn = isLowStock 
+                    ? `<button class="btn-reorder" onclick="reorderStock('${p.id}')">+ Reorder</button>` 
+                    : '';
+
+                return `
+                    <div class="product-item ${lowStockClass}">
+                        <h4>${escapeHTML(p.name)}</h4>
+                        <p><strong>SKU:</strong> ${escapeHTML(p.sku)}</p>
+                        <p><strong>Price:</strong> ₹${parseFloat(p.price).toFixed(2)}</p>
+                        <p><strong>Stock:</strong> ${p.stock} ${isLowStock ? '' : ''}</p>
+                        <div class="product-actions">
+                            <button onclick="editProduct('${p.id}')">Edit</button>
+                            <button onclick="deleteProduct('${p.id}')">Delete</button>
+                            ${reorderBtn}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function reorderStock(productId) {
+            const quantity = prompt('Enter quantity to reorder (min 10):', '20');
+            if (!quantity || isNaN(quantity) || quantity < 10) {
+                alert('Minimum 10 units required');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/products/${productId}/restock`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: parseInt(quantity) })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert(`✅ Reordered ${quantity} units!`);
+                    loadProducts();
+                } else {
+                    alert('Error restocking: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: Backend restock endpoint needed');
+                console.error(error);
+            }
+        }
+
+        document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                sku: document.getElementById('productSKU').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                image: document.getElementById('productImage').value,
+                description: document.getElementById('productDescription').value
+            };
+            
+            try {
+                const res = await fetch(`${API_URL}/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Product added successfully!');
+                    document.getElementById('addProductForm').reset();
+                    loadProducts();
+                } else {
+                    alert('Error adding product: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error adding product');
+            }
+        });
+
+        async function editProduct(id) {
+    // 1. Create the Modal HTML and CSS dynamically
+    const modalId = 'dynamicEditModal';
+    if (document.getElementById(modalId)) document.getElementById(modalId).remove();
+
+    const modalHtml = `
+        <div id="${modalId}" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; font-family: sans-serif;">
+            <div style="background:white; padding:25px; border-radius:12px; width:350px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                <h3 style="margin-top:0; color:#333;">Edit Product Details</h3>
+                <p style="font-size:12px; color:#666; margin-bottom:20px;">Leave any field blank to keep the original value.</p>
+                
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <input type="text" id="new-name" placeholder="Update Name" style="padding:10px; border:1px solid #ddd; border-radius:6px;">
+                    <input type="text" id="new-sku" placeholder="Update SKU" style="padding:10px; border:1px solid #ddd; border-radius:6px;">
+                    <input type="number" id="new-price" placeholder="Update Price" style="padding:10px; border:1px solid #ddd; border-radius:6px;">
+                    <input type="text" id="new-image" placeholder="Update Image URL" style="padding:10px; border:1px solid #ddd; border-radius:6px;">
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button id="cancelEdit" style="padding:8px 15px; border:none; background:#eee; border-radius:6px; cursor:pointer;">Cancel</button>
+                    <button id="saveEdit" style="padding:8px 15px; border:none; background:red; color:white; border-radius:6px; cursor:pointer;">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 2. Inject the modal into the body
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    // 3. Handle Buttons
+    const modalElement = document.getElementById(modalId);
+    
+    // Close modal on Cancel
+    document.getElementById('cancelEdit').onclick = () => modalElement.remove();
+
+        // Handle Save
+    document.getElementById('saveEdit').onclick = async () => {
+        const name = document.getElementById('new-name').value;
+        const sku = document.getElementById('new-sku').value;
+        const price = document.getElementById('new-price').value;
+        const image = document.getElementById('new-image').value;
+
+        // "Only update what changed" Logic
+        const updatedData = {};
+        if (name.trim()) updatedData.name = name;
+        if (sku.trim()) updatedData.sku = sku;
+        if (price.trim()) updatedData.price = parseFloat(price);
+        if (image.trim()) updatedData.image = image;
+
+        // If no changes made, just close
+        if (Object.keys(updatedData).length === 0) {
+            modalElement.remove();
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/products/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (res.ok) {
+                alert('Product updated successfully! ✅');
+                modalElement.remove();
+                loadProducts();
+            } else {
+                const errData = await res.json();
+                alert('Error: ' + (errData.message || 'Update failed'));
+            }
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            alert('Failed to connect to the server.');
+        }
+    };
+}
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/products/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Product deleted successfully!');
+                    loadProducts();
+                } else {
+                    alert('Error deleting product: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error deleting product');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+    <script>
+        function updateUserInfo() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+
+        const userEl = document.getElementById('userName');
+        const roleEl = document.getElementById('userRole');
+
+        console.log("userEl:", userEl);
+        console.log("roleEl:", roleEl);
+
+        if (userEl) userEl.textContent = user.username;
+        if (roleEl) roleEl.textContent = user.role;
+    }
+    fetch('header-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading header navigation:', error));
+
+    fetch('sidebar-nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-nav-placeholder').innerHTML = data;
+            setTimeout(() => {
+                updateUserInfo();
+            }, 0);
+        })
+        .catch(error => console.error('Error loading sidebar navigation:', error));
+        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('roles'));
+    </script>
+</body>
+</html>
